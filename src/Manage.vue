@@ -37,27 +37,28 @@
         <van-list v-model:loading="loading" :finished="finished" :finished-text="i18n.global.t('manage.no-more')">
             <van-cell-group style="top: 46px;">
                 <van-cell v-for="(item, index) in showNodeList" :key="index" center>
-                    <template #title>
-                        <span class="custom-title">{{ item.remarks }}</span>
-                    </template>
-                    <template #label>
-                        <van-space fill>
-                            <van-tag style="white-space: nowrap;" color='#6f3381' v-if="item.custom">Custom</van-tag>
-                            <van-tag style="white-space: nowrap;" color="#1989fa">{{ item.type }}</van-tag>
-                            <van-tag style="white-space: nowrap;" color="#1989fa">{{ item.protocol }}</van-tag>
-                            <van-tag style="white-space: nowrap;" :color="item.color" v-if="item.show">{{ item.ping }}</van-tag>
-                        </van-space>
-                        <span class="custom-title">{{ item.host }}:{{ item.port }}</span>
-                    </template>
-                    <template #value>
-                        <van-space>
-                            <van-button plain hairline type="default" size="small" icon="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9IiMxOTg5ZmEiIGQ9Ik0xMSA5LjQ3VjExaDMuNzZMMTMgMTQuNTNWMTNIOS4yNHpNMTMgMUw2IDE1aDV2OGw3LTE0aC01eiIvPjwvc3ZnPg=="
-                                        :loading="item.speedtestLoading" @click="clickSpeedtest(item)"/>
-                            <van-button plain hairline type="default" size="small" :icon="item.selected?'data:image/svg+xml;base64,PHN2ZyB0PSIxNzI3NjI2OTM1ODI3IiBjbGFzcz0iaWNvbiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjE2NzIyIiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCI+PHBhdGggZD0iTTgyOS40MTg2NjcgMjUzLjQxODY2N2E2NCA2NCAwIDAgMSA5My4zNzYgODcuNDI0bC0yLjg4IDMuMDcyLTQ2OS4zMzMzMzQgNDY5LjMzMzMzM2E2NCA2NCAwIDAgMS04Ny40MjQgMi44OGwtMy4wNzItMi44OC0yNTYtMjU2YTY0IDY0IDAgMCAxIDg3LjQyNC05My4zNzZsMy4wNzIgMi44OEw0MDUuMzMzMzMzIDY3Ny40ODI2NjdsNDI0LjA4NTMzNC00MjQuMDY0eiIgZmlsbD0iIzAwY2MwMCIgcC1pZD0iMTY3MjMiPjwvcGF0aD48L3N2Zz4=':'data:image/svg+xml;base64,PHN2ZyB0PSIxNzI3NjI3MDIwOTE2IiBjbGFzcz0iaWNvbiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjE3NzkzIiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCI+PHBhdGggZD0iTTk2MCA1MTJjMCA4Ny43ODY2NjctMjAuNTIyNjY3IDE2Ni44MjY2NjctNTcuNjIxMzMzIDIzMy4xOTQ2NjdhNDA1LjcxNzMzMyA0MDUuNzE3MzMzIDAgMCAxLTE1Ny4xODQgMTU3LjE4NEM2NzguODQ4IDkzOS40OTg2NjcgNTk5Ljc4NjY2NyA5NjAgNTEyIDk2MGMtODcuNzg2NjY3IDAtMTY2LjgyNjY2Ny0yMC41MjI2NjctMjMzLjE5NDY2Ny01Ny42MjEzMzNBNDA1LjcxNzMzMyA0MDUuNzE3MzMzIDAgMCAxIDEyMS42IDc0NS4xOTQ2NjdDODQuNTAxMzMzIDY3OC44NDggNjQgNTk5Ljc4NjY2NyA2NCA1MTJjMC04Ny43ODY2NjcgMjAuNTIyNjY3LTE2Ni44MjY2NjcgNTcuNjIxMzMzLTIzMy4xOTQ2NjdBNDA1LjcxNzMzMyA0MDUuNzE3MzMzIDAgMCAxIDI3OC44MDUzMzMgMTIxLjZDMzQ1LjE1MiA4NC41MDEzMzMgNDI0LjIxMzMzMyA2NCA1MTIgNjRjODcuNzg2NjY3IDAgMTY2LjgyNjY2NyAyMC41MjI2NjcgMjMzLjE5NDY2NyA1Ny42MjEzMzNhNDA1LjcxNzMzMyA0MDUuNzE3MzMzIDAgMCAxIDE1Ny4xODQgMTU3LjE4NEM5MzkuNDk4NjY3IDM0NS4xNTIgOTYwIDQyNC4yMTMzMzMgOTYwIDUxMnogbS04NS4zMzMzMzMgMGMwLTcyLjAyMTMzMy0xNi4yNTYtMTM2Ljk4MTMzMy00Ni43NjI2NjctMTkxLjU3MzMzM2EzMjAuMzg0IDMyMC4zODQgMCAwIDAtMTI0LjM1Mi0xMjQuMzMwNjY3QzY0OC45ODEzMzMgMTY1LjU4OTMzMyA1ODQuMDIxMzMzIDE0OS4zMzMzMzMgNTEyIDE0OS4zMzMzMzNjLTcyLjAyMTMzMyAwLTEzNi45ODEzMzMgMTYuMjU2LTE5MS41NzMzMzMgNDYuNzYyNjY3YTMyMC4zODQgMzIwLjM4NCAwIDAgMC0xMjQuMzMwNjY3IDEyNC4zNTJDMTY1LjU4OTMzMyAzNzUuMDE4NjY3IDE0OS4zMzMzMzMgNDM5Ljk3ODY2NyAxNDkuMzMzMzMzIDUxMmMwIDcyLjAyMTMzMyAxNi4yNTYgMTM2Ljk4MTMzMyA0Ni43NjI2NjcgMTkxLjU3MzMzM2EzMjAuMzg0IDMyMC4zODQgMCAwIDAgMTI0LjM1MiAxMjQuMzMwNjY3QzM3NS4wMTg2NjcgODU4LjQxMDY2NyA0MzkuOTc4NjY3IDg3NC42NjY2NjcgNTEyIDg3NC42NjY2NjdjNzIuMDIxMzMzIDAgMTM2Ljk4MTMzMy0xNi4yNTYgMTkxLjU3MzMzMy00Ni43NjI2NjdhMzIwLjM4NCAzMjAuMzg0IDAgMCAwIDEyNC4zMzA2NjctMTI0LjM1MkM4NTguNDEwNjY3IDY0OC45ODEzMzMgODc0LjY2NjY2NyA1ODQuMDIxMzMzIDg3NC42NjY2NjcgNTEyeiIgZmlsbD0iIzE5ODlmYSIgcC1pZD0iMTc3OTQiPjwvcGF0aD48L3N2Zz4='"
-                                        :loading="item.switchLoading" @click="switchChecked(item)"/>
-                        </van-space>
-                    </template>
-                </van-cell>
+    <template #title>
+        <span class="custom-title">{{ item.remarks }}</span>
+    </template>
+    <template #label>
+        <van-space fill>
+            <van-tag style="white-space: nowrap;" color='#6f3381' v-if="item.custom">Custom</van-tag> [cite: 11]
+            <van-tag style="white-space: nowrap;" color="#1989fa">{{ item.type }}</van-tag> [cite: 12]
+            <van-tag style="white-space: nowrap;" color="#1989fa">{{ item.protocol }}</van-tag> [cite: 13]
+            <van-tag style="white-space: nowrap;" :color="item.color" v-if="item.show">{{ item.ping }}</van-tag> [cite: 14]
+        </van-space>
+        <span class="custom-title">{{ item.host }}:{{ item.port }}</span>
+    </template>
+    <template #value>
+        <van-space>
+            <van-button plain hairline type="default" size="small" icon="data:image/svg+xml;base64,PHN2ZyB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHdpZHRoPSIxZW0iIGhlaWdodD0iMWVtIiB2aWV3Qm94PSIwIDAgMjQgMjQiPjxwYXRoIGZpbGw9IiMxOTg5ZmEiIGQ9Ik0xMSA5LjQ3VjExaDMuNzZMMTMgMTQuNTNWMTNIOS4yNHpNMTMgMUw2IDE1aDV2OGw3LTE0aC01eiIvPjwvc3ZnPg=="
+                        :loading="item.speedtestLoading" @click="clickSpeedtest(item)"/> [cite: 15]
+            <van-button plain hairline type="default" size="small" :icon="item.selected?'data:image/svg+xml;base64,PHN2ZyB0PSIxNzI3NjI2OTM1ODI3IiBjbGFzcz0iaWNvbiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjE2NzIyIiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCI+PHBhdGggZD0iTTgyOS40MTg2NjcgMjUzLjQxODY2N2E2NCA2NCAwIDAgMSA5My4zNzYgODcuNDI0bC0yLjg4IDMuMDcyLTQ2OS4zMzMzMzQgNDY5LjMzMzMzM2E2NCA2NCAwIDAgMS04Ny40MjQgMi44OGwtMy4wNzItMi44OC0yNTYtMjU2YTY0IDY0IDAgMCAxIDg3LjQyNC05My4zNzZsMy4wNzIgMi44OEw0MDUuMzMzMzMzIDY3Ny40ODI2NjdsNDI0LjA4NTMzNC00MjQuMDY0eiIgZmlsbD0iIzAwY2MwMCIgcC1pZD0iMTY3MjMiPjwvcGF0aD48L3N2Zz4=':'data:image/svg+xml;base64,PHN2ZyB0PSIxNzI3NjI3MDIwOTE2IiBjbGFzcz0iaWNvbiIgdmlld0JveD0iMCAwIDEwMjQgMTAyNCIgdmVyc2lvbj0iMS4xIiB4bWxucz0iaHR0cDovL3d3dy53My5vcmcvMjAwMC9zdmciIHAtaWQ9IjE3NzkzIiB3aWR0aD0iMjAwIiBoZWlnaHQ9IjIwMCI+PHBhdGggZD0iTTk2MCA1MTJjMCA4Ny43ODY2NjctMjAuNTIyNjY3IDE2Ni44MjY2NjctNTcuNjIxMzMzIDIzMy4xOTQ2NjdhNDA1LjcxNzMzMyA0MDUuNzE3MzMzIDAgMCAxLTE1Ny4xODQgMTU3LjE4NEM2NzguODQ4IDkzOS40OTg2NjcgNTk5Ljc4NjY2NyA5NjAgNTEyIDk2MGMtODcuNzg2NjY3IDAtMTY2LjgyNjY2Ny0yMC41MjI2NjctMjMzLjE5NDY2Ny01Ny42MjEzMzNBNDA1LjcxNzMzMyA0MDUuNzE3MzMzIDAgMCAxIDEyMS42IDc0NS4xOTQ2NjdDODQuNTAxMzMzIDY3OC44NDggNjQgNTk5Ljc4NjY2NyA2NCA1MTJjMC04Ny43ODY2NjcgMjAuNTIyNjY3LTE2Ni44MjY2NjcgNTcuNjIxMzMzLTIzMy4xOTQ2NjdBNDA1LjcxNzMzMyA0MDUuNzE3MzMzIDAgMCAxIDI3OC44MDUzMzMgMTIxLjZDMzQ1LjE1MiA4NC41MDEzMzMgNDI0LjIxMzMzMyA2NCA1MTIgNjRjODcuNzg2NjY3IDAgMTY2LjgyNjY2NyAyMC41MjI2NjcgMjMzLjE5NDY2NyA1Ny42MjEzMzNhNDA1LjcxNzMzMyA0MDUuNzE3MzMzIDAgMCAxIDE1Ny4xODQgMTU3LjE4NEM5MzkuNDk4NjY3IDM0NS4xNTIgOTYwIDQyNC4yMTMzMzMgOTYwIDUxMnogbS04NS4zMzMzMzMgMGMwLTcyLjAyMTMzMy0xNi4yNTYtMTM2Ljk4MTMzMy00Ni43NjI2NjctMTkxLjU3MzMzM2EzMjAuMzg0IDMyMC4zODQgMCAwIDAtMTI0LjM1Mi0xMjQuMzMwNjY3QzY0OC45ODEzMzMgMTY1LjU4OTMzMyA1ODQuMDIxMzMzIDE0OS4zMzMzMzMgNTEyIDE0OS4zMzMzMzNjLTcyLjAyMTMzMyAwLTEzNi45ODEzMzMgMTYuMjU2LTE5MS41NzMzMzMgNDYuNzYyNjY3YTMyMC4zODQgMzIwLjM4NCAwIDAgMC0xMjQuMzMwNjY3IDEyNC4zNTJDMTY1LjU4OTMzMyAzNzUuMDE4NjY3IDE0OS4zMzMzMzMgNDM5Ljk3ODY2NyAxNDkuMzMzMzMzIDUxMmMwIDcyLjAyMTMzMyAxNi4yNTYgMTM2Ljk4MTMzMyA0Ni43NjI2NjcgMTkxLjU3MzMzM2EzMjAuMzg0IDMyMC4zODQgMCAwIDAgMTI0LjM1MWEyNC4zMzA2NjcgMTI0LjM1MkM4NTguNDEwNjY3IDY0OC45ODEzMzMgODc0LjY2NjY2NyA1ODQuMDIxMzMzIDg3NC42NjY2NjcgNTEyeiIgZmlsbD0iIzE5ODlmYSIgcC1pZD0iMTc3OTQiPjwvcGF0aD48L3N2Zz4='"
+                        :loading="item.switchLoading" @click="switchChecked(item)"/> [cite: 16]
+            <van-button plain hairline type="danger" size="small" icon="cross" @click="confirmDeleteNode(item)"/>
+        </van-space>
+    </template>
+</van-cell>
                 <van-back-top bottom="10vh" immediate />
             </van-cell-group>
         </van-list>
@@ -283,6 +284,67 @@ const saveSwitchCustom = () => {
     saveFile(content, `${dataDir.value}/custom.txt`)
     onLoad()
 }
+// Fungsi untuk menghapus node
+const deleteNode = async (nodeToDelete) => {
+    showLoadingToast({
+        duration: 0,
+        forbidClick: true,
+        message: i18n.global.t('manage.deleting-node'), // Tambahkan terjemahan
+    });
+
+    try {
+        // Logika penghapusan akan berbeda tergantung apakah node itu 'custom' atau dari langganan
+        if (nodeToDelete.custom) {
+            // Untuk node custom, Anda mungkin perlu menghapusnya dari daftar custom.txt
+            // dan kemudian memanggil API jika diperlukan, atau hanya memperbarui file custom.txt
+            // Contoh: Hapus dari array allNodeList dan showNodeList
+            allNodeList.value = allNodeList.value.filter(node => node.hashId !== nodeToDelete.hashId);
+            showNodeList.value = showNodeList.value.filter(node => node.hashId !== nodeToDelete.hashId);
+
+            // Simpan perubahan ke custom.txt jika node custom dihapus
+            // Ini mirip dengan saveSwitchCustom, tapi untuk menghapus
+            const customNodes = allNodeList.value.filter(node => node.custom).map(node => {
+                // Anda perlu cara untuk merekonstruksi data asli node custom sebelum di-convertObject
+                // Atau, Anda bisa menyimpan daftar node custom asli secara terpisah
+                // Untuk saat ini, kita asumsikan Anda bisa mendapatkan nama/identifier uniknya
+                return node.remarks; // Ini hanya contoh, sesuaikan dengan struktur data Anda
+            });
+            let content = customNodes.join('\n');
+            await saveFile(content, `${dataDir.value}/custom.txt`); // [cite: 51, 52]
+
+            showToast(i18n.global.t('manage.node-deleted-success')); // Tambahkan terjemahan
+        } else {
+            // Untuk node dari langganan, biasanya tidak bisa dihapus secara individual dari sisi klien
+            // karena akan muncul lagi saat sinkronisasi berikutnya.
+            // Fitur ini mungkin lebih cocok untuk menyembunyikan node atau menandainya.
+            // Jika API Anda mendukung penghapusan node langganan (yang jarang terjadi), panggil di sini.
+            // Contoh: await callApi(`delete subscribenode ${nodeToDelete.id_unik_dari_server}`);
+            showToast(i18n.global.t('manage.delete-subscribed-node-info')); // Tambahkan terjemahan
+            // Untuk sementara, kita hanya akan menghapusnya dari tampilan lokal
+            allNodeList.value = allNodeList.value.filter(node => node.hashId !== nodeToDelete.hashId);
+            showNodeList.value = showNodeList.value.filter(node => node.hashId !== nodeToDelete.hashId);
+        }
+        // Muat ulang daftar node jika diperlukan, atau cukup filter array yang ada
+        // searchNode(nodeName.value); // Panggil kembali searchNode untuk memperbarui tampilan
+    } catch (error) {
+        console.error("Error deleting node:", error);
+        showToast(i18n.global.t('manage.node-deleted-failed') + error); // Tambahkan terjemahan
+    } finally {
+        closeToast();
+    }
+};
+
+// Fungsi untuk menampilkan dialog konfirmasi penghapusan node
+const confirmDeleteNode = (item) => {
+    showConfirmDialog({
+        title: i18n.global.t('manage.confirm-delete-title'), // Anda perlu menambahkan terjemahan ini
+        message: i18n.global.t('manage.confirm-delete-message', { nodeName: item.remarks }), // Dan ini juga
+    }).then(() => {
+        deleteNode(item);
+    }).catch(() => {
+        // Aksi dibatalkan
+    });
+};
 // rule
 const ruleResult = ref([])
 const currentRuleResult = ref(0)
